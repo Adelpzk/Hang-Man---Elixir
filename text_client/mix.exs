@@ -5,7 +5,7 @@ defmodule TextClient.MixProject do
     [
       app: :text_client,
       version: "0.1.0",
-      elixir: "~> 1.17",
+      elixir: "~>  1.15.7",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -14,14 +14,16 @@ defmodule TextClient.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      included_applications: [ :hangman ],
+      extra_applications: [:logger, :observer, :wx, :runtime_tools]
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hangman, path: "../hangman"}
+      {:hangman, path: "../hangman"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
     ]
   end
 end

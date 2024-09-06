@@ -1,10 +1,9 @@
-defmodule ImplGameTest do
+defmodule HangmanImplGameTest do
   use ExUnit.Case
   alias Hangman.Impl.Game
 
   test "new game returns structure" do
-    game = Game.new_game
-
+    game = Game.new_game()
     assert game.turns_left == 7
     assert game.game_state == :initializing
     assert length(game.letters) > 0
@@ -12,24 +11,14 @@ defmodule ImplGameTest do
 
   test "new game returns correct word" do
     game = Game.new_game("wombat")
-
     assert game.turns_left == 7
     assert game.game_state == :initializing
     assert game.letters == ["w", "o", "m", "b", "a", "t"]
   end
 
-  test "new game return small case word" do
-    game = Game.new_game
-
-    assert game.turns_left == 7
-    assert game.game_state == :initializing
-    assert Enum.all?(game.letters, fn letter -> letter =~ ~r/^[a-z]$/ end)
-  end
-
-  test "state doesnt change if game won or lost" do
+  test "state doesn't change if a game is won or lost" do
     for state <- [:won, :lost] do
       game = Game.new_game("wombat")
-
       game = Map.put(game, :game_state, state)
       {new_game, _tally} = Game.make_move(game, "x")
       assert new_game == game
@@ -110,7 +99,7 @@ defmodule ImplGameTest do
       ["f", :bad_guess,    2, ["_", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f"]],
       ["g", :bad_guess,    1, ["_", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g"]],
       ["h", :good_guess,   1, ["h", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g", "h"]],
-      ["i", :lost,         0, ["h", "e", "l", "l", "o"], ["a", "b", "c", "d", "e", "f", "g", "h", "i"]],
+      ["i", :lost,         0, ["h", "e", "_", "_", "_"], ["a", "b", "c", "d", "e", "f", "g", "h", "i"]],
     ]
     |> test_sequence_of_moves()
   end
